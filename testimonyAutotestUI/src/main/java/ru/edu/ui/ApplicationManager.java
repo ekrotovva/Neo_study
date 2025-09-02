@@ -29,6 +29,8 @@ public class ApplicationManager {
         pricePage = new PricePage(driver);
     }
 
+    public WebDriver getDriver() { return driver; }
+
     public void close() {
         if (driver != null) {
             driver.quit();

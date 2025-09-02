@@ -2,32 +2,44 @@ package ru.edu.ui;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import java.time.LocalDate;
 
 public class SendFormPage extends Element {
 
-    private final By dateField = By.id("date");
-    private final By coldField = By.id("coldData");
-    private final By hotField = By.id("hotData");
-    private final By gasField = By.id("gasData");
-    private final By elecField = By.id("elecData");
-    private final By submitButton = By.id("button");
+    @FindBy(id = "date")     private WebElement date;
+    @FindBy(id = "coldData") private WebElement coldData;
+    @FindBy(id = "hotData")  private WebElement hotData;
+    @FindBy(id = "gasData")  private WebElement gasData;
+    @FindBy(id = "elecData") private WebElement elecData;
+    @FindBy(id = "button")   private WebElement submit;
+
+    @FindBy(id = "table")    private WebElement table; // сама таблица
 
     public SendFormPage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this); // инициализация @FindBy
     }
 
-    public void fillForm() {
-        // сегодня
-        driver.findElement(dateField).sendKeys(LocalDate.now().toString());
-        driver.findElement(coldField).sendKeys("123");
-        driver.findElement(hotField).sendKeys("45");
-        driver.findElement(gasField).sendKeys("7");
-        driver.findElement(elecField).sendKeys("890");
+    /** Заполнить форму валидными данными (можно перегрузить метод с параметрами) */
+    public SendFormPage fillWithDefaults() {
+        date.clear();
+        date.sendKeys(LocalDate.now().toString());
+        coldData.sendKeys("123");
+        hotData.sendKeys("45");
+        gasData.sendKeys("7");
+        elecData.sendKeys("890");
+        return this;
     }
 
-    public void submitForm() {
-        click(find(submitButton));
+    public SendFormPage submit() {
+        click(submit);
+        return this;
+    }
+
+    public WebElement tableElement() {
+        return table;
     }
 }
